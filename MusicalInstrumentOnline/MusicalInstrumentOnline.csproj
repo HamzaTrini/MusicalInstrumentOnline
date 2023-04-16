@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Home\.vs\slnx.sqlite" />
+    <None Include="wwwroot\Home\.vs\woody-1.0.0\config\applicationhost.config" />
+    <None Include="wwwroot\Home\.vs\woody-1.0.0\FileContentIndex\592f6087-3795-4b17-896a-0c5fca4e3713.vsidx" />
+    <None Include="wwwroot\Home\.vs\woody-1.0.0\FileContentIndex\read.lock" />
+    <None Include="wwwroot\Register\.sass-cache\0717b98c6a6bd391fb4f8df76acf1fcea07f5d98\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\21880c0ffe15753a53f8402e9f64e1077e071510\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\25faf4a967da51e59251c020bd6e9fa9d1fb23e3\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\25faf4a967da51e59251c020bd6e9fa9d1fb23e3\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\25faf4a967da51e59251c020bd6e9fa9d1fb23e3\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\25faf4a967da51e59251c020bd6e9fa9d1fb23e3\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\25faf4a967da51e59251c020bd6e9fa9d1fb23e3\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\3948936f84e1a30385e73a9be140b58b48c82e15\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\9dc767a56f3dc2f8a933300255cd2265f13191d4\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\9dc767a56f3dc2f8a933300255cd2265f13191d4\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\c36f88b26093e3516ab62f7245605adc5c11410b\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\c36f88b26093e3516ab62f7245605adc5c11410b\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\cec26e9170155d08bca7be48ab33ee76eb89985a\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\de43089b9300c63e94c69b4ea0269a5b0e6e6a33\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\de43089b9300c63e94c69b4ea0269a5b0e6e6a33\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f71149907399ab955d3d70a25ac6bfed8a6004f4\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f71149907399ab955d3d70a25ac6bfed8a6004f4\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f71149907399ab955d3d70a25ac6bfed8a6004f4\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f71149907399ab955d3d70a25ac6bfed8a6004f4\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f71149907399ab955d3d70a25ac6bfed8a6004f4\variables.scssc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Home\.vs\woody-1.0.0\FileContentIndex\merges\" />
+    <Folder Include="wwwroot\Home\.vs\woody-1.0.0\v17\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+</Project>
