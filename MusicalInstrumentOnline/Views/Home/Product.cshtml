@@ -16,23 +16,37 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="section-title text-center">
-            <h1 class="display-5 mb-5">Our Product</h1>
+            @if (ViewBag.Product != null)
+            {
+                <h1 class="display-5 mb-5">@ViewBag.Product</h1>
+            }
+            else
+            {
+                <h1 class="display-5 mb-5">Our Product</h1>
+            }
+           
         </div>
         <div class="row g-4">
+           
             @foreach (var item in Model)
             {
+              
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item">
+                    <div class="team-item">                          
                         <div class="overflow-hidden position-relative Product">
-                            <img src=@Url.Content("~/Home/img/"+ item.imagePath) height="100%" width="100%" asp-append-version="true" />
-                            <div class="team-social">
-
-                            </div>
+                           <a href=/Home/BayProd/@item.productId> 
+                             <img src=@Url.Content("~/Home/img/"+ item.imagePath) height="100%" width="100%" asp-append-version="true" />
+                           </a>
+                               <div class="team-social">
+                                
+                               </div>
                         </div>
+                           
                         <div class="text-center border border-5 border-light border-top-0 p-4">
                             <h5 class="mb-0">
                                 @item.name
                             </h5>
+
                             <small>@item.price</small>
                         </div>
                     </div>

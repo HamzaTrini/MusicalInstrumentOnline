@@ -34,6 +34,9 @@
                     <input asp-for="Email" id="email" placeholder="Email" required />
                     <input asp-for="userName" id="name" placeholder="User Name" required />
                     <input type="password" name="Password" id="password" placeholder="Password" required />
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.message
+                    </div>
                   @*  <div class="select-list">
                         <select name="course_type" id="course_type">
                             <option slected value="">Course Type</option>

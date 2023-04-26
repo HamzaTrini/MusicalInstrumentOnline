@@ -17,7 +17,31 @@ namespace MusicalInstrumentOnline.Controllers
             _logger = logger;
             _configuration = configuration;
         }
+        public List<Product> GetInfo()
+        {
+            Product product = new Product();
+            List<Product> list = new List<Product>();
 
+            string cs = _configuration.GetConnectionString("ConnectionName");
+            SqlConnection con = new SqlConnection(cs);
+            SqlCommand cmd = new SqlCommand("select * from Product", con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("Product");
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                product = new Product();
+                product.productId = Convert.ToInt32(dr["Productid"]);
+                product.categoryId = Convert.ToInt32(dr["Categoryid"]);
+                product.name = dr["name"].ToString();
+                product.imagePath = dr["imagepath"].ToString();
+                product.price = dr["price"].ToString();
+                product.productId = Convert.ToInt32(dr["Productid"]);
+
+                list.Add(product);
+            }
+            return list;
+        }
         [HttpGet]
         public IActionResult Index()
         {
@@ -119,64 +143,32 @@ namespace MusicalInstrumentOnline.Controllers
         {
             if (id != 0)
             {
-                Product product = new Product();
-                List<Product> list = new List<Product>();
-
-                string cs = _configuration.GetConnectionString("ConnectionName");
-                SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("select * from Product", con);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Product");
-                da.Fill(dt);
-                foreach (DataRow dr in dt.Rows)
-                {
-                    product = new Product();
-                    product.categoryId = Convert.ToInt32(dr["Categoryid"]);
-                    product.name = dr["name"].ToString();
-                    product.imagePath = dr["imagepath"].ToString();
-                    product.price = dr["price"].ToString();
-
-                    list.Add(product);
-                }
-
-                return View(list.Where(x => x.categoryId == id));
+                return View(GetInfo().ToList().Where(x => x.categoryId == id));
             }
             else
             {
-                Product product = new Product();
-                List<Product> list = new List<Product>();
-
-                string cs = _configuration.GetConnectionString("ConnectionName");
-                SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("select * from Product", con);
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Product");
-                da.Fill(dt);
-                foreach (DataRow dr in dt.Rows)
-                {
-                    product = new Product();
-                    product.categoryId = Convert.ToInt32(dr["Categoryid"]);
-                    product.name = dr["name"].ToString();
-                    product.imagePath = dr["imagepath"].ToString();
-                    product.price = dr["price"].ToString();
-
-                    list.Add(product);
-                }
-
-                return View(list.ToList());
+                ViewBag.Product = "All Product";
+                return View(GetInfo().ToList());
             }
         }
-
+        
+        [HttpGet]
         public IActionResult Admin()
         {
             return View();
         }
 
+        [HttpGet]
+        public IActionResult BayProd(int id)
+        {
+            return View(GetInfo().ToList().Where(x => x.productId == id));
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-
         }
     }
 }

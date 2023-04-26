@@ -1,0 +1,83 @@
+﻿@model IEnumerable<MusicalInstrumentOnline.Models.Product>
+@{
+    Layout = "~/Views/Shared/_LayoutShared.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FormWizard_v1</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="colorlib.com">
+
+		<!-- MATERIAL DESIGN ICONIC FONT -->
+		<link rel="stylesheet" href="~/BayProduct/fonts/material-design-iconic-font/css/material-design-iconic-font.css">
+
+		<!-- STYLE CSS -->
+		<link rel="stylesheet" href="~/BayProduct/css/style.css">
+		<style>
+			.Font{
+			font-family: 'Segoe Script', sans-serif;
+			}
+			.Font2{
+		    font-family:Lucida Sans;
+			}
+			.Postion{
+					position: relative;
+		            left: 150px;
+			}
+		    img {
+			height: 521px;
+		    }
+			.Postion2{
+				position: relative;
+                left: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+            <form action="" id="wizard">
+        		<!-- SECTION 1 -->
+				
+                <h2></h2>
+                <section>
+					@foreach (var item in Model)
+					{
+                    <div class="inner">
+						<div class="image-holder">
+							<img src=@Url.Content("~/Home/img/"+ item.imagePath) height="100%" width="100%" asp-append-version="true" />
+						</div>
+						  <div class="form-content" >
+							<div class="form-header">
+								<h3>@item.name</h3>
+							</div>
+							@*<p>Please fill with your details</p>*@
+							<div class="form-row">
+								<h1 class="fw-bold Font Postion2">Price @item.price </h1> 
+							</div>
+						
+						<div class="form-holder">
+							<p class=" font-monospace Font2"> Please Inter The Quantity</p> 
+							<input type="number" placeholder="Quantity" class="form-control">
+						</div>
+						<br />
+						<button type="button" value="Submit" class="btn btn-outline-success Postion">Submit</button>
+						</div>
+					</div>
+					
+					}
+                </section>
+            </form>
+		</div>
+
+		<!-- JQUERY -->
+		<script src="~/BayProduct/js/jquery-3.3.1.min.js"></script>
+
+		<!-- JQUERY STEP -->
+		<script src="~/BayProduct/js/jquery.steps.js"></script>
+		<script src="~/BayProduct/js/main.js"></script>
+		<!-- Template created and distributed by Colorlib -->
+</body>
+</html>

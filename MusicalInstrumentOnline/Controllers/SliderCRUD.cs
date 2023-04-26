@@ -15,8 +15,8 @@ namespace MusicalInstrumentOnline.Controllers
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
         }
-        // GET: Slider
-        public ActionResult Index()
+
+        public List<Slider> GetInfo()
         {
             Slider slider = new Slider();
 
@@ -40,13 +40,18 @@ namespace MusicalInstrumentOnline.Controllers
 
                 list.Add(slider);
             }
-            return View(list.ToList());
+            return list;
+        }
+        // GET: Slider
+        public ActionResult Index()
+        {
+            return View(GetInfo().ToList());
         }
 
         // GET: Slider/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.Id == id));
         }
 
         // GET: Slider/Create
@@ -132,7 +137,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: Slider/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.Id == id));
         }
 
         // POST: Slider/Delete/5
@@ -142,6 +147,12 @@ namespace MusicalInstrumentOnline.Controllers
         {
             try
             {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from Slider where Id=\'" + id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
                 return RedirectToAction(nameof(Index));
             }
             catch

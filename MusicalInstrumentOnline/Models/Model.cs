@@ -87,7 +87,7 @@ namespace MusicalInstrumentOnline.Models
         public string? imagePath { get; set; }
         [Required(ErrorMessage = "The Price is required")]
         public string? price { get; set; }
-        [Required(ErrorMessage = "The CategoryId is required")]
+        [Required(ErrorMessage = "The Category Id is required")]
         public int categoryId { get; set; }
         [NotMapped]
         [Required(ErrorMessage = "The Image File is required")]
@@ -121,5 +121,36 @@ namespace MusicalInstrumentOnline.Models
         public string? Password { get; set; }
         public string? Rollid { get; set; }
 
+    }
+    public class BayProduct
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "The Name is required")]
+        public string? name { get; set; }
+        public string? imagePath { get; set; }
+        [Required(ErrorMessage = "The Price is required")]
+        public string? price { get; set; }
+        [Required(ErrorMessage = "The product Id is required")]
+        public int productId { get; set; }
+        [NotMapped]
+        [Required(ErrorMessage = "The Image File is required")]
+        public IFormFile? emageFile { get; set; }
+    }
+    public class Cart
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "The Name is required")]
+        public string? name { get; set; }
+        public string? imagePath { get; set; }
+        [Required(ErrorMessage = "The Price is required")]
+        public string? price { get; set; }
+        [Required(ErrorMessage = "The usert Id is required")]
+        public int usertId { get; set; }
+        [Required(ErrorMessage = "The Quantity is required")]
+        public int Quantity { get; set; }
+        public int totalPrice { get; set; }
+        [NotMapped]
+        [Required(ErrorMessage = "The Image File is required")]
+        public IFormFile? emageFile { get; set; }
     }
 }

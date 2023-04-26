@@ -15,9 +15,7 @@ namespace MusicalInstrumentOnline.Controllers
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
         }
-
-        // GET: ProductCRUD
-        public ActionResult Index()
+        public List<Product> GetInfo()
         {
             Product product = new Product();
             List<Product> list = new List<Product>();
@@ -35,16 +33,23 @@ namespace MusicalInstrumentOnline.Controllers
                 product.name = dr["name"].ToString();
                 product.imagePath = dr["imagepath"].ToString();
                 product.price = dr["price"].ToString();
+                product.productId = Convert.ToInt32(dr["Productid"]);
+
 
                 list.Add(product);
             }
-            return View(list.ToList());
+            return list;
+        }
+        // GET: ProductCRUD
+        public ActionResult Index()
+        {
+            return View(GetInfo().ToList());
         }
 
         // GET: ProductCRUD/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.productId == id));
         }
 
         // GET: ProductCRUD/Create
@@ -116,7 +121,7 @@ namespace MusicalInstrumentOnline.Controllers
                         product.imagePath = fileName;
                         string cs = _configuration.GetConnectionString("ConnectionName");
                         SqlConnection con = new SqlConnection(cs);
-                        SqlCommand cmd = new SqlCommand("UPDATE Product SET name =\'" + product.name + "\', imagepath =\'" + product.imagePath + "\', price=\'"+ product.price+ "\',CategoryI=\'"+ product.categoryId+"\' WHERE Productid=\'" + product.productId + "\';", con);
+                        SqlCommand cmd = new SqlCommand("UPDATE Product SET name =\'" + product.name + "\', imagepath =\'" + product.imagePath + "\', price=\'"+ product.price+ "\',Categoryid=\'"+ product.categoryId+"\' WHERE Productid=\'" + product.productId + "\';", con);
                         con.Open();
                         cmd.ExecuteNonQuery();
                         con.Close();
@@ -135,7 +140,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: ProductCRUD/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.productId == id));
         }
 
         // POST: ProductCRUD/Delete/5
@@ -145,6 +150,12 @@ namespace MusicalInstrumentOnline.Controllers
         {
             try
             {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from Product where Productid=\'" + id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
                 return RedirectToAction(nameof(Index));
             }
             catch

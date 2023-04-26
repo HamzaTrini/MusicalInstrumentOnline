@@ -1,9 +1,21 @@
-﻿@model MusicalInstrumentOnline.Models.Product
+﻿@model IEnumerable<MusicalInstrumentOnline.Models.Product>
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
 
+<style>
+.input{
+    color: white;
+    color: white;
+    background-color: white;
+}
+</style>
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Product</h4>
-    <hr />
+
+
+    @*<hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.productId)
@@ -40,5 +52,63 @@
     <form asp-action="Delete">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
-    </form>
+    </form>*@
+
+    <table class="table">
+     <thead>
+        <tr>
+            <th>
+               @Html.DisplayNameFor(model => model.productId)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.imagePath)
+
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.price)
+
+            </th>
+            <th>
+           @Html.DisplayNameFor(model => model.categoryId)
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+               @Html.DisplayFor(modelItem => item.productId)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                    <img src=@Url.Content("~/Home/img/" + item.imagePath) asp-append-version="true"
+                     width="100" height="100" />
+            </td>
+             <td>
+                 @Html.DisplayFor(modelItem => item.price)
+   
+            </td>
+             <td>
+                  @Html.DisplayFor(modelItem => item.categoryId)
+
+            </td>
+            <td>
+                <form asp-action="Delete">
+                             <input type="submit" value="Delete" asp-action="Delete" class="btn btn-danger"  asp-route-productId=@item.productId/> |
+                    <a asp-action="Index">Back to List</a>
+                </form>
+            </td>
+        </tr>
+}
+ </tbody>
+</table>
 </div>

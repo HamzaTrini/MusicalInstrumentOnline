@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MusicalInstrumentOnline.Models.BayProduct>
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<style>
+.input{
+    color: white;
+    color: white;
+    background-color: white;
+}
+</style>
+<div>
+    <h4>BayProduct</h4>
+    <hr />
+    <table class="table">
+     <thead>
+        <tr>
+            <th>
+               @Html.DisplayNameFor(model => model.Id)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.imagePath)
+
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.price)
+
+            </th>
+            <th>
+           @Html.DisplayNameFor(model => model.productId)
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+               @Html.DisplayFor(modelItem => item.Id)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                    <img src=@Url.Content("~/Home/img/" + item.imagePath) asp-append-version="true"
+                     width="100" height="100" />
+            </td>
+             <td>
+                 @Html.DisplayFor(modelItem => item.price)
+   
+            </td>
+             <td>
+                  @Html.DisplayFor(modelItem => item.productId)
+
+            </td>
+            <td>
+                <form asp-action="Edit">
+                             <input type="submit" value="Edit" asp-action="Edit" class="btn btn-danger"  asp-route-Id=@item.Id/> |
+                    <a asp-action="Index">Back to List</a>
+                </form>
+            </td>
+        </tr>
+}
+ </tbody>
+</table>
+</div>

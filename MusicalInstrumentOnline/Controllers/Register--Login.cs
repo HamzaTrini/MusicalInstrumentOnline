@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentOnline.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq.Expressions;
 
 namespace MusicalInstrumentOnline.Controllers
 {
@@ -10,10 +11,12 @@ namespace MusicalInstrumentOnline.Controllers
     {
         private readonly IWebHostEnvironment? _webHostEnviroment;
         private readonly IConfiguration _configuration;
-        public Register__Login(IWebHostEnvironment? webHostEnviroment, IConfiguration configuration)
+        private readonly ILogger<Register__Login> _logger;
+        public Register__Login(IWebHostEnvironment? webHostEnviroment, IConfiguration configuration, ILogger<Register__Login>logger)
         {
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
+            _logger = logger;   
         }
         [HttpGet]
         public IActionResult Register()
@@ -25,20 +28,45 @@ namespace MusicalInstrumentOnline.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register([Bind("Fullname,userName,Password,Email")] RegisterClass register)
         {
-          string cs = _configuration.GetConnectionString("ConnectionName");
-          SqlConnection con = new SqlConnection(cs);
-          SqlCommand cmd = new SqlCommand("insert into Register values(\'" + register.Fullname + "\',\'" + register.userName + "\',\'" + register.Password + "\',\'" + register.Email + "\')", con);
-          con.Open();
-          cmd.ExecuteNonQuery();
-          User_ user = new User_();
-          user.userName = register.userName;
-          user.Password = register.Password;
-          user.Rollid = "2";
-          SqlCommand cmd2 = new SqlCommand("insert into user_ values(\'" + user.userName + "\',\'" + user.Password + "\',\'" + user.Rollid + "\')", con);
-          cmd2.ExecuteNonQuery();
-          con.Close();
-          return  RedirectToAction(nameof(Login));
-        
+            try
+            {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("insert into Register values(\'" + register.Fullname + "\',\'" + register.userName + "\',\'" + register.Password + "\',\'" + register.Email + "\')", con);
+                con.Open();
+              
+                //SqlCommand cmd3 = new SqlCommand("select * from register", con);
+                //SqlDataAdapter da = new SqlDataAdapter(cmd3);
+                //DataTable dt = new DataTable("register");
+                //da.Fill(dt);
+                //foreach (DataRow dr in dt.Rows)
+                //{ 
+                //   if(register.Password == dr["Password"].ToString())
+                //   {
+                //        ViewBag.message = "The Password Dublicate with a nother coustomer Please inter a nother password";
+                //        return View(ViewBag.message);
+                //    }
+                //    else
+                //    {
+                //        continue;
+                //    }
+                    
+                //}
+                cmd.ExecuteNonQuery();
+                User_ user = new User_();
+                user.userName = register.userName;
+                user.Password = register.Password;
+                user.Rollid = "2";
+                SqlCommand cmd2 = new SqlCommand("insert into user_ values(\'" + user.userName + "\',\'" + user.Password + "\',\'" + user.Rollid + "\')", con);
+                cmd2.ExecuteNonQuery();
+                con.Close();
+                return RedirectToAction(nameof(Login));
+            }
+            catch(Exception ex)
+            {
+                 _logger.LogError("The Password Dublicate with a nother coustomer Please inter a nother password" + ex.Message);
+            }
+            return View();
         }
 
         [HttpGet]
@@ -76,7 +104,7 @@ namespace MusicalInstrumentOnline.Controllers
                 {
                     case "1":
                         HttpContext.Session.SetInt32("id", (int)user.id);
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Admin", "Home");
 
                     case "2":
                         HttpContext.Session.SetInt32("id", (int)user.id);

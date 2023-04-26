@@ -15,10 +15,7 @@ namespace MusicalInstrumentOnline.Controllers
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
         }
-
-
-        // GET: CategoryCRUD
-        public ActionResult Index()
+        public List<Category> GetInfo()
         {
             Category category = new Category();
 
@@ -39,13 +36,19 @@ namespace MusicalInstrumentOnline.Controllers
 
                 list.Add(category);
             }
-            return View(list.ToList());
+            return list;
+        }
+
+        // GET: CategoryCRUD
+        public ActionResult Index()
+        {
+            return View(GetInfo().ToList());
         }
 
         // GET: CategoryCRUD/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x=>x.categoryId==id));
         }
 
         // GET: CategoryCRUD/Create
@@ -129,7 +132,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: CategoryCRUD/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x=>x.categoryId==id));
         }
 
         // POST: CategoryCRUD/Delete/5
@@ -139,6 +142,12 @@ namespace MusicalInstrumentOnline.Controllers
         {
             try
             {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from Category where Categoryid=\'" + id+"\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -1,5 +1,15 @@
 ﻿@model MusicalInstrumentOnline.Models.Slider
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
 
+<style>
+.input{
+    color: white;
+    color: white;
+    background-color: white;
+}
+</style>
 <h4>Slider</h4>
 <hr />
 <div class="row">
@@ -8,22 +18,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description1" class="control-label"></label>
-                <input asp-for="Description1" class="form-control" />
+                <input asp-for="Description1" class="form-control input" />
                 <span asp-validation-for="Description1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description2" class="control-label"></label>
-                <input asp-for="Description2" class="form-control" />
+                <input asp-for="Description2" class="form-control input" />
                 <span asp-validation-for="Description2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description3" class="control-label"></label>
-                <input asp-for="Description3" class="form-control" />
+                <input asp-for="Description3" class="form-control input" />
                 <span asp-validation-for="Description3" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="imageFile" class="control-label"></label>
-                <input asp-for="imageFile" class="form-control" />
+                <input asp-for="imageFile" class="form-control input" />
                 <span asp-validation-for="imageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,6 +47,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
+@*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+}*@

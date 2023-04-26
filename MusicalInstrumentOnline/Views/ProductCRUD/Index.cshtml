@@ -1,5 +1,15 @@
 ﻿@model IEnumerable<MusicalInstrumentOnline.Models.Product>
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
 
+<style>
+.input{
+    color: white;
+    color: white;
+    background-color: white;
+}
+</style>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -34,7 +44,8 @@
                 @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.imagePath)
+                <img src=@Url.Content("~/Home/img/" + item.imagePath) asp-append-version="true"
+                     width="100" height="100" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.price)
@@ -43,9 +54,9 @@
                 @Html.DisplayFor(modelItem => item.categoryId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new {  id=item.productId  }) |
+                @Html.ActionLink("Details", "Details", new { id=item.productId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.productId })
             </td>
         </tr>
 }

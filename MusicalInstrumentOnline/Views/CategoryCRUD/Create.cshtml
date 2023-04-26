@@ -1,5 +1,17 @@
 ﻿@model MusicalInstrumentOnline.Models.Category
 
+@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<style>
+.input{
+    color: white;
+    color: white;
+    background-color: white;
+}
+
+</style>
 <h4>Category</h4>
 <hr />
 <div class="row">
@@ -9,7 +21,7 @@
            
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" />
+                <input asp-for="name" class="form-control input" />
                 <span asp-validation-for="name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,6 +45,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
+@*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+}*@

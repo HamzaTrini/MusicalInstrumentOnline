@@ -15,8 +15,7 @@ namespace MusicalInstrumentOnline.Controllers
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
         }
-        // GET: Tastimonal
-        public ActionResult Index()
+        public List<Tastimonal> GetInfo()
         {
             Tastimonal tastimonal = new Tastimonal();
 
@@ -31,19 +30,25 @@ namespace MusicalInstrumentOnline.Controllers
             foreach (DataRow dr in dt.Rows)
             {
                 tastimonal = new Tastimonal();
+                tastimonal.Id = Convert.ToInt32(dr["id"]);
                 tastimonal.name = dr["name"].ToString();
                 tastimonal.Description = dr["descriptions"].ToString();
                 tastimonal.imagepath = dr["imagepath"].ToString();
 
                 list.Add(tastimonal);
             }
-            return View(list.ToList());
+            return list;
+        }
+        // GET: Tastimonal
+        public ActionResult Index()
+        {
+            return View(GetInfo().ToList());
         }
 
         // GET: Tastimonal/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x=>x.Id==id));
         }
 
         // GET: Tastimonal/Create
@@ -130,7 +135,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: Tastimonal/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.Id == id));
         }
 
         // POST: Tastimonal/Delete/5
@@ -140,6 +145,12 @@ namespace MusicalInstrumentOnline.Controllers
         {
             try
             {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from tastimonal where id=\'" + id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
                 return RedirectToAction(nameof(Index));
             }
             catch
