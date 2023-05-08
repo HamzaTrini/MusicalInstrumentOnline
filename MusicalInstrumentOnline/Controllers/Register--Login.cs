@@ -91,6 +91,7 @@ namespace MusicalInstrumentOnline.Controllers
             foreach (DataRow dr in dt.Rows)
             {
                login = new User_();
+               login.id = Convert.ToInt32(dr["id"]);
                login.userName = dr["username"].ToString();
                login.Password = dr["Password"].ToString();
                login.Rollid = dr["Rollid"].ToString();

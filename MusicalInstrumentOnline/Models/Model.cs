@@ -92,6 +92,8 @@ namespace MusicalInstrumentOnline.Models
         [NotMapped]
         [Required(ErrorMessage = "The Image File is required")]
         public IFormFile? emageFile { get; set; }
+        public int Quantity { get; set; }
+
     }
 
     public class RegisterClass
@@ -136,21 +138,18 @@ namespace MusicalInstrumentOnline.Models
         [Required(ErrorMessage = "The Image File is required")]
         public IFormFile? emageFile { get; set; }
     }
-    public class Cart
+    public class CartProduct
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "The Name is required")]
         public string? name { get; set; }
         public string? imagePath { get; set; }
-        [Required(ErrorMessage = "The Price is required")]
         public string? price { get; set; }
-        [Required(ErrorMessage = "The usert Id is required")]
         public int usertId { get; set; }
         [Required(ErrorMessage = "The Quantity is required")]
         public int Quantity { get; set; }
-        public int totalPrice { get; set; }
+        public double totalPrice { get; set; }
+        public int Productid { get; set; }
         [NotMapped]
-        [Required(ErrorMessage = "The Image File is required")]
         public IFormFile? emageFile { get; set; }
     }
 }
