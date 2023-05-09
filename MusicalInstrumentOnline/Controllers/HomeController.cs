@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO.Pipelines;
 
 namespace MusicalInstrumentOnline.Controllers
 {
@@ -89,6 +90,58 @@ namespace MusicalInstrumentOnline.Controllers
                 cart.usertId = Convert.ToInt32(dr["userid"]);
 
                 list.Add(cart);
+            }
+            return list;
+        }
+        public List<CartProduct> GetInfoCartByUser(int id)
+        {
+            CartProduct cart = new CartProduct();
+            List<CartProduct> list = new List<CartProduct>();
+
+            string cs = _configuration.GetConnectionString("ConnectionName");
+            SqlConnection con = new SqlConnection(cs);
+            SqlCommand cmd = new SqlCommand("select * from Cart where userid=\'"+id+"\'", con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("Cart");
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                cart = new CartProduct();
+                cart.Id = Convert.ToInt32(dr["id"]);
+                cart.price = dr["price"].ToString();
+                cart.name = dr["name"].ToString();
+                cart.imagePath = dr["imagepath"].ToString();
+                cart.Quantity = Convert.ToInt32(dr["Quantity"]);
+                cart.totalPrice = Convert.ToDouble(dr["totalprice"]);
+                cart.Productid = Convert.ToInt32(dr["Productid"]);
+                cart.usertId = Convert.ToInt32(dr["userid"]);
+
+                list.Add(cart);
+            }
+            return list;
+        }
+        public List<VisaCard> GetInfoCartPayment()
+        {
+            VisaCard visa = new VisaCard();
+            List<VisaCard> list = new List<VisaCard>();
+
+            string cs = _configuration.GetConnectionString("ConnectionName");
+            SqlConnection con = new SqlConnection(cs);
+            SqlCommand cmd = new SqlCommand("select * from VisaCard", con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("VisaCard");
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                visa = new VisaCard();
+                visa.id = Convert.ToInt32(dr["id"]);
+                visa.usertname = dr["username"].ToString();
+                visa.password = dr["password"].ToString();
+                visa.expirydate = dr["expirydate"].ToString();
+                visa.cvv = Convert.ToInt32(dr["cvv"]);
+                visa.crdit = Convert.ToInt32(dr["crdit"]);
+                visa.cardnumber = Convert.ToInt32(dr["cardnumber"]);
+                list.Add(visa);
             }
             return list;
         }
@@ -257,7 +310,24 @@ namespace MusicalInstrumentOnline.Controllers
             var userid = 0;
             if (HttpContext.Session.GetInt32("id") != null)
             {
+                List<CartProduct> list = new List<CartProduct>();
                 userid = (int)HttpContext.Session.GetInt32("id");
+                var cart = GetInfoCartByUser(userid);
+                string price = "";
+                foreach (var item in cart)
+                {
+                    if (item.price.Length == 7)
+                    {
+                        price = item.price.Substring(1, 6);
+                    }
+                    else if (item.price.Length == 6)
+                    {
+                        price = item.price.Substring(1, 5);
+                    }
+                    list.Add(item);
+                    
+                }
+                ViewBag.TotalSale = list.Sum(x => x.Quantity * Convert.ToDouble(price));
                 return View(GetInfoCart().Where(x=> x.usertId== userid));
             }
             else
@@ -265,6 +335,65 @@ namespace MusicalInstrumentOnline.Controllers
                 return RedirectToAction("Login", "Register__Login");
             }
         }
+        [HttpPost]
+        public IActionResult Cart(int id)
+        {
+            return RedirectToAction("Payment");
+        }
+
+        [HttpGet]
+        public IActionResult Payment()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Payment([Bind("id,crdit,cvv,cardnumber,usertname,expirydate,password")] VisaCard visa)
+        {
+            var userid = 0;
+            if (HttpContext.Session.GetInt32("id") != null)
+            {
+                List<CartProduct> list = new List<CartProduct>();
+                userid = (int)HttpContext.Session.GetInt32("id");
+                var Info = GetInfoCartPayment();
+                foreach (var item in Info)
+                {
+                    if (visa.usertname == item.usertname && visa.password == item.password)
+                    {
+                        var cart = GetInfoCartByUser(userid);
+                        string price = "";
+                        foreach (var item2 in cart)
+                        {
+                            if (item2.price.Length == 7)
+                            {
+                                price = item2.price.Substring(1, 6);
+                            }
+                            else if (item2.price.Length == 6)
+                            {
+                                price = item2.price.Substring(1, 5);
+                            }
+                            list.Add(item2);
+
+                        }
+                        double totalsale = list.Sum(x => x.Quantity * Convert.ToDouble(price));
+                        string cs = _configuration.GetConnectionString("ConnectionName");
+                        SqlConnection con = new SqlConnection(cs);
+                        var temp = item.crdit - totalsale;
+                        SqlCommand cmd = new SqlCommand("Update VisaCard set crdit=\'"+temp+"\' where username=\'"+item.usertname+"\'", con);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+
+                }
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Register__Login");
+            }
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

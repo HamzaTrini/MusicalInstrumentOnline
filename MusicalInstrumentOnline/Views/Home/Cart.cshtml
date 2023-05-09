@@ -201,6 +201,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
+                <form asp-action="Cart" enctype="multipart/form-data">
                 <div class="cart_container">
                     <div class="cart_title">Shopping Cart<small> (1 item in your cart) </small></div>
                    @foreach (var item in Model)
@@ -230,11 +231,12 @@
                     <div class="order_total">
                         <div class="order_total_content text-md-right">
                             <div class="order_total_title">Order Total:</div>
-                            <div class="order_total_amount">₹22000</div>
+                            <div class="order_total_amount">$@ViewBag.TotalSale</div>
                         </div>
                     </div>
-                    <div class="cart_buttons"> <button type="button" class="button cart_button_clear">Continue Shopping</button> <button type="button" class="button cart_button_checkout">Add to Cart</button> </div>
+                    <div class="cart_buttons"> <a href="/Home/Product" class="button cart_button_clear">Continue Shopping</a> <button type="submit" class="button cart_button_checkout">Payment Now</button> </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>

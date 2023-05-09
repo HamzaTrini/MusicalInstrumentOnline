@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutShared.cshtml";
+}
+<style>
+.StyleBottun{
+        background-color: #AB7442 !important;
+        color: floralwhite !important;
+        height: 50px;
+        width: 140px;
+        border-radius: 10px;
+}
+</style>
+<section class="p-4 p-md-5" style="background-color: #AB7442 !important;">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-5">
+            <div class="card rounded-3">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h3>Settings</h3>
+                        <h6>Payment</h6>
+                    </div>
+                    <form asp-action="Payment" enctype="multipart/form-data">
+                        <h3 class="fw-bold mb-4">Add Card:</h3>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="formControlLgXsd" name="usertname" class="form-control form-control-lg"
+                                   placeholder="Anna Doe" />
+                            <label class="form-label" for="formControlLgXsd">Cardholder's Name</label>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-7">
+                                <div class="form-outline">
+                                    <input type="text" id="formControlLgXM" name="cardnumber" class="form-control form-control-lg"
+                                           placeholder="1234 5678 1234 5678" />
+                                    <label class="form-label" for="formControlLgXM">Card Number</label>
+                                </div>
+                                <div class="form-outline">
+                                    <input type="password" id="formControlLgXM" name="password" class="form-control form-control-lg"
+                                           placeholder="************" />
+                                    <label class="form-label" for="formControlLgXM">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-outline">
+                                    <input type="text" id="formControlLgExpk" name="expirydate" class="form-control form-control-lg"
+                                           placeholder="MM/YYYY" />
+                                    <label class="form-label" for="formControlLgExpk">Expire</label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-outline">
+                                    <input type="password" id="formControlLgcvv" name="cvv" class="form-control form-control-lg"
+                                           placeholder="Cvv" />
+                                    <label class="form-label" for="formControlLgcvv">Cvv</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-secondary StyleBottun"> Add card </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -152,4 +152,14 @@ namespace MusicalInstrumentOnline.Models
         [NotMapped]
         public IFormFile? emageFile { get; set; }
     }
+    public class VisaCard
+    {
+        public int id { get; set; }
+        public double crdit { get; set; }
+        public int cvv { get; set; }
+        public int cardnumber { get; set; }
+        public string? usertname { get; set; }
+        public string? expirydate { get; set; }
+        public string? password { get; set; }
+    }
 }
