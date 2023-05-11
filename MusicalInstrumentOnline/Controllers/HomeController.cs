@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MimeKit;
 using MusicalInstrumentOnline.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO.Pipelines;
+using System.Net.Mail;
 
 namespace MusicalInstrumentOnline.Controllers
 {
@@ -297,6 +301,7 @@ namespace MusicalInstrumentOnline.Controllers
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
+             List<CartProduct> list = new List<CartProduct>();
                 return RedirectToAction("Cart");
             }
             else
@@ -313,21 +318,20 @@ namespace MusicalInstrumentOnline.Controllers
                 List<CartProduct> list = new List<CartProduct>();
                 userid = (int)HttpContext.Session.GetInt32("id");
                 var cart = GetInfoCartByUser(userid);
-                string price = "";
                 foreach (var item in cart)
                 {
                     if (item.price.Length == 7)
                     {
-                        price = item.price.Substring(1, 6);
+                        item.price = item.price.Substring(1, item.price.Length-1);
                     }
                     else if (item.price.Length == 6)
                     {
-                        price = item.price.Substring(1, 5);
+                        item.price = item.price.Substring(1, item.price.Length-1);
                     }
                     list.Add(item);
                     
                 }
-                ViewBag.TotalSale = list.Sum(x => x.Quantity * Convert.ToDouble(price));
+                ViewBag.TotalSale = list.Sum(x => x.Quantity * Convert.ToDouble(x.price));
                 return View(GetInfoCart().Where(x=> x.usertId== userid));
             }
             else
@@ -360,27 +364,29 @@ namespace MusicalInstrumentOnline.Controllers
                     if (visa.usertname == item.usertname && visa.password == item.password)
                     {
                         var cart = GetInfoCartByUser(userid);
-                        string price = "";
+                        
                         foreach (var item2 in cart)
                         {
                             if (item2.price.Length == 7)
                             {
-                                price = item2.price.Substring(1, 6);
+                               item2.price = item2.price.Substring(1, item2.price.Length-1);
                             }
                             else if (item2.price.Length == 6)
                             {
-                                price = item2.price.Substring(1, 5);
+                                item2.price = item2.price.Substring(1, item2.price.Length-1);
                             }
                             list.Add(item2);
 
                         }
-                        double totalsale = list.Sum(x => x.Quantity * Convert.ToDouble(price));
+                        double totalsale = list.Sum(x => x.Quantity * Convert.ToDouble(x.price));
                         string cs = _configuration.GetConnectionString("ConnectionName");
-                        SqlConnection con = new SqlConnection(cs);
                         var temp = item.crdit - totalsale;
+                        SqlConnection con = new SqlConnection(cs);
                         SqlCommand cmd = new SqlCommand("Update VisaCard set crdit=\'"+temp+"\' where username=\'"+item.usertname+"\'", con);
+                        SqlCommand cmd2 = new SqlCommand("delete cart where  userid=\'" + userid + "\'",con);
                         con.Open();
                         cmd.ExecuteNonQuery();
+                        cmd2.ExecuteNonQuery();
                         con.Close();
                     }
 
@@ -394,6 +400,12 @@ namespace MusicalInstrumentOnline.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("id");
+            return RedirectToAction("Index");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
