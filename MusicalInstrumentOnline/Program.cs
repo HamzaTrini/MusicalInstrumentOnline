@@ -1,3 +1,6 @@
+using System.Net.Mail;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +10,9 @@ builder.Configuration.GetConnectionString("ConnectionName");
 //services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(60); });
 builder.Services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(60); });
 var app = builder.Build();
-
+var builderr = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("email.json");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

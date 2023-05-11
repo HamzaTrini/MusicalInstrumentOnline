@@ -11,6 +11,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO.Pipelines;
 using System.Net.Mail;
+using System.Net.Mail;
+using System.Net;
+using System.Net.Mail;
+using MimeKit.Text;
+using MailKit.Security;
 
 namespace MusicalInstrumentOnline.Controllers
 {
@@ -388,6 +393,16 @@ namespace MusicalInstrumentOnline.Controllers
                         cmd.ExecuteNonQuery();
                         cmd2.ExecuteNonQuery();
                         con.Close();
+                        var email = new MimeMessage();
+                        email.From.Add(MailboxAddress.Parse("josiane.leannon@ethereal.email"));
+                        email.To.Add(MailboxAddress.Parse("josiane.leannon@ethereal.email"));
+                        email.Subject = "Eshop";
+                        email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You For Coming</h1>" };
+                        using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                        smtp.Connect("smtp.ethereal.email", 587,SecureSocketOptions.StartTls);//gmail.com.email
+                        smtp.Authenticate("josiane.leannon@ethereal.email", "FaAqYY9Y3U5ms6nb6G");
+                        smtp.Send(email);
+                        smtp.Disconnect(true);
                     }
 
                 }
