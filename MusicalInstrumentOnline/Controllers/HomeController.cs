@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO.Pipelines;
 using System.Net.Mail;
-using System.Net.Mail;
 using System.Net;
 using System.Net.Mail;
 using MimeKit.Text;
@@ -71,7 +70,7 @@ namespace MusicalInstrumentOnline.Controllers
                user.id = Convert.ToInt32(dr["id"]);
                user.userName = dr["username"].ToString();
                user.Password = dr["Password"].ToString();
-                list.Add(user);
+               list.Add(user);
             }
             return list;
         }
@@ -394,16 +393,17 @@ namespace MusicalInstrumentOnline.Controllers
                         cmd2.ExecuteNonQuery();
                         con.Close();
                         var email = new MimeMessage();
-                        email.From.Add(MailboxAddress.Parse("josiane.leannon@ethereal.email"));
-                        email.To.Add(MailboxAddress.Parse("josiane.leannon@ethereal.email"));
-                        email.Subject = "Eshop";
-                        email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You For Coming</h1>" };
+                        email.From.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
+                        email.To.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
+                        email.Subject = "Eshop Hamza Altrini";
+                        email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You "+visa.usertname+ " For Coming</h1> <br/> <h1> Hamza Altrini</h1>" };
                         using var smtp = new MailKit.Net.Smtp.SmtpClient();
-                        smtp.Connect("smtp.ethereal.email", 587,SecureSocketOptions.StartTls);//gmail.com.email
-                        smtp.Authenticate("josiane.leannon@ethereal.email", "FaAqYY9Y3U5ms6nb6G");
+                        smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTlsWhenAvailable);//gmail.com.email
+                        smtp.Authenticate("jessy.kozey84@ethereal.email", "pRv6dcbJFee4cByG1j");//write password
                         smtp.Send(email);
                         smtp.Disconnect(true);
                     }
+                   
 
                 }
 
