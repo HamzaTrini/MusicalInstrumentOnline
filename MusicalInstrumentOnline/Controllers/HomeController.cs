@@ -57,7 +57,6 @@ namespace MusicalInstrumentOnline.Controllers
         {
             User_ user = new User_();
             List<User_> list = new List<User_>();
-
             string cs = _configuration.GetConnectionString("ConnectionName");
             SqlConnection con = new SqlConnection(cs);
             SqlCommand cmd = new SqlCommand("select * from User_", con);
@@ -78,7 +77,6 @@ namespace MusicalInstrumentOnline.Controllers
         {
             CartProduct cart = new CartProduct();
             List<CartProduct> list = new List<CartProduct>();
-
             string cs = _configuration.GetConnectionString("ConnectionName");
             SqlConnection con = new SqlConnection(cs);
             SqlCommand cmd = new SqlCommand("select * from Cart", con);
@@ -105,7 +103,6 @@ namespace MusicalInstrumentOnline.Controllers
         {
             CartProduct cart = new CartProduct();
             List<CartProduct> list = new List<CartProduct>();
-
             string cs = _configuration.GetConnectionString("ConnectionName");
             SqlConnection con = new SqlConnection(cs);
             SqlCommand cmd = new SqlCommand("select * from Cart where userid=\'"+id+"\'", con);
@@ -132,7 +129,6 @@ namespace MusicalInstrumentOnline.Controllers
         {
             VisaCard visa = new VisaCard();
             List<VisaCard> list = new List<VisaCard>();
-
             string cs = _configuration.GetConnectionString("ConnectionName");
             SqlConnection con = new SqlConnection(cs);
             SqlCommand cmd = new SqlCommand("select * from VisaCard", con);
@@ -263,12 +259,8 @@ namespace MusicalInstrumentOnline.Controllers
         [HttpGet]
         public IActionResult BayProd(int id)
         {
-            // var userid =0;
             if (HttpContext.Session.GetInt32("id") != null)
             {
-                //userid =(int)HttpContext.Session.GetInt32("id");
-                //var user = GetInfoUser().ToList();
-                //var home = Tuple.Create<IEnumerable<User_>, IEnumerable<Product>>(user, product);
                 var product = GetInfo().ToList().Where(x => x.productId == id);
                 return View(product);
             }
@@ -298,14 +290,21 @@ namespace MusicalInstrumentOnline.Controllers
                 }
 
                 cart.totalPrice = cart.Quantity * Convert.ToDouble(price);
-                string cs = _configuration.GetConnectionString("ConnectionName");
-                SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("insert into cart values(\'" + cart.name + "\',\'" + cart.price + "\',\'" + cart.imagePath + "\',\'" + cart.Quantity + "\',\'" + cart.totalPrice + "\',\'" + cart.Productid + "\',\'"+ userid+"\')", con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
+                    if (cart.Quantity > 0)
+                    {
+                        string cs = _configuration.GetConnectionString("ConnectionName");
+                        SqlConnection con = new SqlConnection(cs);
+                        SqlCommand cmd = new SqlCommand("insert into cart values(\'" + cart.name + "\',\'" + cart.price + "\',\'" + cart.imagePath + "\',\'" + cart.Quantity + "\',\'" + cart.totalPrice + "\',\'" + cart.Productid + "\',\'" + userid + "\')", con);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    else
+                    {
+                        ViewBag.ValidNumber = "Please Inter Valid Number";
+                        return RedirectToAction("BayProd");
+                    }
             }
-             List<CartProduct> list = new List<CartProduct>();
                 return RedirectToAction("Cart");
             }
             else
@@ -392,19 +391,19 @@ namespace MusicalInstrumentOnline.Controllers
                         cmd.ExecuteNonQuery();
                         cmd2.ExecuteNonQuery();
                         con.Close();
-                        var email = new MimeMessage();
-                        email.From.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
-                        email.To.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
-                        email.Subject = "Eshop Hamza Altrini";
-                        email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You "+visa.usertname+ " For Coming</h1> <br/> <h1> Hamza Altrini</h1>" };
-                        using var smtp = new MailKit.Net.Smtp.SmtpClient();
-                        smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTlsWhenAvailable);//gmail.com.email
-                        smtp.Authenticate("jessy.kozey84@ethereal.email", "pRv6dcbJFee4cByG1j");//write password
-                        smtp.Send(email);
-                        smtp.Disconnect(true);
+                        //-----------Sent Email-----------
+                        //var email = new MimeMessage();
+                        //email.From.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
+                        //email.To.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
+                        //email.Subject = "Eshop Hamza Altrini";
+                        //email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You "+visa.usertname+ " For Coming</h1> <br/> <h1> Hamza Altrini</h1>" };
+                        //using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                        //smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTlsWhenAvailable);//gmail.com.email
+                        //smtp.Authenticate("jessy.kozey84@ethereal.email", "pRv6dcbJFee4cByG1j");//write password
+                        //smtp.Send(email);
+                        //smtp.Disconnect(true);
                     }
                    
-
                 }
 
                 return RedirectToAction("Index");
@@ -417,9 +416,34 @@ namespace MusicalInstrumentOnline.Controllers
 
         [HttpGet]
         public IActionResult Logout()
+		{
+            if (HttpContext.Session.GetInt32("id") != null)
+            {
+                HttpContext.Session.Remove("id");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            HttpContext.Session.Remove("id");
-            return RedirectToAction("Index");
+            try
+            {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from cart where id=\'" + id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return RedirectToAction("Cart");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

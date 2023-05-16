@@ -223,11 +223,18 @@
                                         <div class="cart_item_title">Price</div>
                                         <div class="cart_item_text">@item.price</div>
                                     </div>
+                                            <div class="cart_item_price cart_info_col">
+                                                <div class="cart_item_title">Delete</div>
+                                                <div class="cart_item_text">
+                                                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                                                </div>
+                                            </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                    }
+                        
                     <div class="order_total">
                         <div class="order_total_content text-md-right">
                             <div class="order_total_title">Order Total:</div>
