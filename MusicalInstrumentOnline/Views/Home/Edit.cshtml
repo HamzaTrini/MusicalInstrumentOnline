@@ -1,0 +1,34 @@
+﻿@model MusicalInstrumentOnline.Models.CartProduct
+@{
+    Layout = "~/Views/Shared/_LayoutShared.cshtml";
+}
+<style>
+ .EditStyle{
+position:relative;
+left:500px
+
+ }
+</style>
+<h4>Edit Cart</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-route-Id=@ViewBag.id enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group EditStyle">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control input" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group EditStyle">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Cart" class="EditStyle">Back to List</a>
+</div>

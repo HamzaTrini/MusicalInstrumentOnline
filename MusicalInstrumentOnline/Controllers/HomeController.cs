@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using MimeKit.Text;
 using MailKit.Security;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MusicalInstrumentOnline.Controllers
 {
@@ -146,6 +147,25 @@ namespace MusicalInstrumentOnline.Controllers
                 visa.crdit = Convert.ToInt32(dr["crdit"]);
                 visa.cardnumber = Convert.ToInt32(dr["cardnumber"]);
                 list.Add(visa);
+            }
+            return list;
+        }
+        public List<CartProduct> GetInfoCartPaymentById(int id)
+        {
+            CartProduct cart = new CartProduct();
+            List<CartProduct> list = new List<CartProduct>();
+            string cs = _configuration.GetConnectionString("ConnectionName");
+            SqlConnection con = new SqlConnection(cs);
+            SqlCommand cmd = new SqlCommand("select * from Cart where id=\'"+id+"\'", con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("Cart");
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                cart = new CartProduct();
+                cart.Id = Convert.ToInt32(dr["id"]);
+                cart.Quantity = Convert.ToInt32(dr["Quantity"]);
+                list.Add(cart);
             }
             return list;
         }
@@ -302,10 +322,10 @@ namespace MusicalInstrumentOnline.Controllers
                     else
                     {
                         ViewBag.ValidNumber = "Please Inter Valid Number";
-                        return RedirectToAction("BayProd");
+                        return RedirectToAction("Product");
                     }
             }
-                return RedirectToAction("Cart");
+                return RedirectToAction("Product");
             }
             else
             {
@@ -439,6 +459,39 @@ namespace MusicalInstrumentOnline.Controllers
                 cmd.ExecuteNonQuery();
                 con.Close();
                 return RedirectToAction("Cart");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            try
+            {
+                ViewBag.id=id;  
+                return View();
+                 
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind("Id,Quantity")] CartProduct cart)
+        {
+            try
+            {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("UPDATE Cart SET Quantity =\'" +cart.Quantity  + "\' WHERE id=\'" + cart.Id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return RedirectToAction(nameof(Cart));
             }
             catch
             {
