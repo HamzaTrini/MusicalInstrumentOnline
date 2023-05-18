@@ -307,14 +307,18 @@
             </div>
             <div class="owl-carousel testimonial-carousel">
                 @foreach(var item in Model.Item3){
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light p-2 mx-auto mb-3" src=@Url.Content("~/Home/img/" + item.imagepath) style="width: 90px; height: 90px;" asp-append-version="true">
+                @if (ViewBag.TastimonalList < 3)
+                {
+                    <div class="testimonial-item text-center">
+                        <img class="img-fluid bg-light p-2 mx-auto mb-3" src=@Url.Content("~/Home/img/" + item.imagepath) style="width: 90px; height: 90px;" asp-append-version="true">
                     <div class="testimonial-text text-center p-4">
                         <p>@item.Description</p>
                         <h5 class="mb-1">@item.name</h5>
                         <span class="fst-italic">Profession</span>
                     </div>
                 </div>
+                    ViewBag.TastimonalList++;
+                }
                 }
             </div>
         </div>

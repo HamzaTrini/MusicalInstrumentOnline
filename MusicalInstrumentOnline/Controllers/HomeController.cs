@@ -220,7 +220,7 @@ namespace MusicalInstrumentOnline.Controllers
 
                 list3.Add(tastimonal);
             }
-
+            ViewBag.TastimonalList = 0;
             Slider slider = new Slider();
             List<Slider> list4 = new List<Slider>();
             SqlCommand cmd4 = new SqlCommand("select * from Slider", con);
@@ -498,7 +498,7 @@ namespace MusicalInstrumentOnline.Controllers
                 return View();
             }
         }
-
+      
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

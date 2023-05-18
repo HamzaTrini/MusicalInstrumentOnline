@@ -1,47 +1,69 @@
 ﻿@model MusicalInstrumentOnline.Models.Tastimonal
 @{
-    Layout = "~/Views/Shared/_Admin.cshtml";
+	Layout = null;
 }
-
 <style>
-.input{
-    color: white;
-    color: white;
-    background-color: white;
-}
-</style>
-<h4>Tastimonal</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control input" />
-                <span asp-validation-for="name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control input" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="imageFile" class="control-label"></label>
-                <input asp-for="imageFile" class="form-control input" />
-                <span asp-validation-for="imageFile" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+	* {
+		background-color: white !important;
+	}
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+	.ColorBottum {
+		color: #AB7442 !important
+	}
+
+		.ColorBottum:hover {
+			color: wheat !important
+		}
+
+	.wrapper {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		background: #AB7442 !important;
+		background-size: cover;
+	}
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>RegistrationForm_v6 by Colorlib</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- MATERIAL DESIGN ICONIC FONT -->
+	<link rel="stylesheet" href="~/Testimonal/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+
+	<!-- STYLE CSS -->
+	<link rel="stylesheet" href="~/Testimonal/css/style.css">
+</head>
+
+<body>
+
+	<div class="wrapper">
+		<div class="inner">
+			<div class="image-holder">
+				<img src="~/Testimonal/images/Nasser Shamaa.jpg" alt="">
+			</div>
+			<form asp-action="Create" enctype="multipart/form-data">
+				<h3>Make your mark in our world</h3>
+				<div class="form-row">
+					<input asp-for="name" class="form-control" placeholder="Name">
+					<input asp-for="imageFile" class="form-control" placeholder="Image" accept="image/*">
+				</div>
+				<textarea asp-for="Description" placeholder="Message" class="form-control" style="height: 130px;"></textarea>
+				<button class="ColorBottum">
+					Book Now
+					<i class="zmdi zmdi-long-arrow-right ColorBottum"></i>
+				</button>
+			</form>
+
+		</div>
+	</div>
+
+	<script src="~/Testimonal/js/jquery-3.3.1.min.js"></script>
+	<script src="~/Testimonal/js/main.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
 
 @*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

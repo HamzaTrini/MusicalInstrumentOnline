@@ -37,6 +37,7 @@ namespace MusicalInstrumentOnline.Controllers
 
                 list.Add(tastimonal);
             }
+            ViewBag.TastimonalList = 0;
             return list;
         }
         // GET: Tastimonal
@@ -62,31 +63,40 @@ namespace MusicalInstrumentOnline.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind("name,Description,imageFile")] Tastimonal tastimonal )
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetInt32("id") != null)
             {
-                if (tastimonal.imageFile != null)
+                if (ModelState.IsValid)
                 {
-                    string wwwrootpath = _webHostEnviroment.WebRootPath;
-                    string fileName = Guid.NewGuid().ToString() + " " + tastimonal.imageFile.FileName;
-                    string path = Path.Combine(wwwrootpath + "/Home/img/" + fileName);
-                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    if (tastimonal.imageFile != null)
                     {
-                        await tastimonal.imageFile.CopyToAsync(fileStream);
+                        string wwwrootpath = _webHostEnviroment.WebRootPath;
+                        string fileName = Guid.NewGuid().ToString() + " " + tastimonal.imageFile.FileName;
+                        string path = Path.Combine(wwwrootpath + "/Home/img/" + fileName);
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await tastimonal.imageFile.CopyToAsync(fileStream);
+                        }
+                        tastimonal.imagepath = fileName;
+                        string cs = _configuration.GetConnectionString("ConnectionName");
+                        SqlConnection con = new SqlConnection(cs);
+                        SqlCommand cmd = new SqlCommand("insert into tastimonal values(\'" + tastimonal.imagepath + "\',\'" + tastimonal.Description + "\' ,\'" + tastimonal.name + "\')", con);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return RedirectToAction("Index", "Home");
                     }
-                    tastimonal.imagepath = fileName;
-                    string cs = _configuration.GetConnectionString("ConnectionName");
-                    SqlConnection con = new SqlConnection(cs);
-                    SqlCommand cmd = new SqlCommand("insert into tastimonal values(\'" + tastimonal.imagepath + "\',\'" + tastimonal.Description + "\' ,\'"+ tastimonal.name+"\')", con);
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    return RedirectToAction(nameof(Index));
                 }
             }
+            else
+            {
+                return RedirectToAction("Login","Register__Login");
 
-            return View(tastimonal);
+            }
 
-        }
+            return RedirectToAction("Index","Home");
+			
+
+		}
 
         // GET: Tastimonal/Edit/5
         public ActionResult Edit(int id)
@@ -133,7 +143,7 @@ namespace MusicalInstrumentOnline.Controllers
         }
 
         // GET: Tastimonal/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Reject(int id)
         {
             return View(GetInfo().ToList().Where(x => x.Id == id));
         }
@@ -141,7 +151,7 @@ namespace MusicalInstrumentOnline.Controllers
         // POST: Tastimonal/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Reject(int id, IFormCollection collection)
         {
             try
             {
