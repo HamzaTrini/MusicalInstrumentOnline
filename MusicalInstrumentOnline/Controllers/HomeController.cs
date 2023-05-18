@@ -245,14 +245,21 @@ namespace MusicalInstrumentOnline.Controllers
         [HttpPost]
         public IActionResult Index([Bind("name,email,spicalNote")] Contact contact)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetInt32("id") != null)
             {
-                string cs = _configuration.GetConnectionString("ConnectionName");
-                SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("insert into Contact values(\'" + contact.name + "\',\'" + contact.email + "\',\'" + contact.spicalNote + "\')", con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();                                
+                if (ModelState.IsValid)
+                {
+                    string cs = _configuration.GetConnectionString("ConnectionName");
+                    SqlConnection con = new SqlConnection(cs);
+                    SqlCommand cmd = new SqlCommand("insert into Contact values(\'" + contact.name + "\',\'" + contact.email + "\',\'" + contact.spicalNote + "\')", con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Register__Login");
             }
             return View();
         }
