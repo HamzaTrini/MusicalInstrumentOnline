@@ -91,6 +91,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: CategoryCRUD/Edit/5
         public ActionResult Edit(int id)
         {
+            ViewBag.Id = id;
             return View();
         }
 

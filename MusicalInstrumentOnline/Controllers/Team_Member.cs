@@ -16,6 +16,30 @@ namespace MusicalInstrumentOnline.Controllers
             _webHostEnviroment = webHostEnviroment;
             _configuration = configuration;
         }
+        public List<TeamMember> GetInfo()
+        {
+            TeamMember team_Member = new TeamMember();
+
+            List<TeamMember> list = new List<TeamMember>();
+
+            string cs = _configuration.GetConnectionString("ConnectionName");
+            SqlConnection con = new SqlConnection(cs);
+            SqlCommand cmd = new SqlCommand("select * from Teammember", con);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable("Teammember");
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                team_Member = new TeamMember();
+                team_Member.Id = Convert.ToInt32(dr["id"]);
+                team_Member.description = dr["descriptions"].ToString();
+                team_Member.name = dr["name"].ToString();
+                team_Member.emagePath = dr["imagepath"].ToString();
+
+                list.Add(team_Member);
+            }
+            return list.ToList();
+        }
         // GET: Team_Member
         public ActionResult Index()
         {
@@ -32,6 +56,7 @@ namespace MusicalInstrumentOnline.Controllers
             foreach (DataRow dr in dt.Rows)
             {
                 team_Member = new TeamMember();
+                team_Member.Id = Convert.ToInt32(dr["id"]);
                 team_Member.description = dr["descriptions"].ToString();
                 team_Member.name = dr["name"].ToString();
                 team_Member.emagePath = dr["imagepath"].ToString();
@@ -86,6 +111,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: Team_Member/Edit/5
         public ActionResult Edit(int id)
         {
+            ViewBag.Id = id;
             return View();
         }
 
@@ -129,7 +155,7 @@ namespace MusicalInstrumentOnline.Controllers
         // GET: Team_Member/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(GetInfo().ToList().Where(x => x.Id == id));
         }
 
         // POST: Team_Member/Delete/5
@@ -139,6 +165,12 @@ namespace MusicalInstrumentOnline.Controllers
         {
             try
             {
+                string cs = _configuration.GetConnectionString("ConnectionName");
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("delete from Teammember where Id=\'" + id + "\';", con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
                 return RedirectToAction(nameof(Index));
             }
             catch
