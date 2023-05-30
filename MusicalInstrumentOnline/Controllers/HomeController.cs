@@ -418,19 +418,23 @@ namespace MusicalInstrumentOnline.Controllers
                         cmd.ExecuteNonQuery();
                         cmd2.ExecuteNonQuery();
                         con.Close();
-                        //-----------Sent Email-----------
+                        //-----------Sent Email---------- -
                         //var email = new MimeMessage();
-                        //email.From.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
-                        //email.To.Add(MailboxAddress.Parse("jessy.kozey84@ethereal.email"));
-                        //email.Subject = "Eshop Hamza Altrini";
-                        //email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You "+visa.usertname+ " For Coming</h1> <br/> <h1> Hamza Altrini</h1>" };
+                        //email.From.Add(MailboxAddress.Parse("tomas.okuneva@ethereal.email"));
+                        //email.To.Add(MailboxAddress.Parse("tomas.okuneva@ethereal.email"));
+                        //email.Subject = "Eshop \r\n Hamza \r\n Altrini";
+                        //email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Thank You" + visa.usertname + " For Coming</h1> <br/> <h1> Hamza Altrini</h1>" };
                         //using var smtp = new MailKit.Net.Smtp.SmtpClient();
                         //smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTlsWhenAvailable);//gmail.com.email
-                        //smtp.Authenticate("jessy.kozey84@ethereal.email", "pRv6dcbJFee4cByG1j");//write password
+                        //smtp.Authenticate("tomas.okuneva@ethereal.email", "jU2ZUufF8cPRJguTkN");//write password
                         //smtp.Send(email);
                         //smtp.Disconnect(true);
                     }
-                   
+                    else
+                    {
+                        return View();
+                    }
+
                 }
 
                 return RedirectToAction("Index");
@@ -502,7 +506,7 @@ namespace MusicalInstrumentOnline.Controllers
             }
             catch
             {
-                return View();
+                  return View();
             }
         }
       
