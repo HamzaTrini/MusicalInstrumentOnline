@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddMvc();
 builder.Configuration.GetConnectionString("ConnectionName");
 //services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(60); });
-builder.Services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(60); });
+builder.Services.AddSession(o => { o.IdleTimeout = TimeSpan.FromMinutes(15); });
 var app = builder.Build();
 var builderr = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
