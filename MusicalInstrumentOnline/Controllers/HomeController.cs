@@ -319,7 +319,7 @@ namespace MusicalInstrumentOnline.Controllers
                 cart.totalPrice = cart.Quantity * Convert.ToDouble(price);
                     if (cart.Quantity > 0)
                     {
-                        string cs = _configuration.GetConnectionString("ConnectionName");
+                        string? cs = _configuration.GetConnectionString("ConnectionName");
                         SqlConnection con = new SqlConnection(cs);
                         SqlCommand cmd = new SqlCommand("insert into cart values(\'" + cart.name + "\',\'" + cart.price + "\',\'" + cart.imagePath + "\',\'" + cart.Quantity + "\',\'" + cart.totalPrice + "\',\'" + cart.Productid + "\',\'" + userid + "\')", con);
                         con.Open();
@@ -359,7 +359,7 @@ namespace MusicalInstrumentOnline.Controllers
                         item.price = item.price.Substring(1, item.price.Length-1);
                     }
                     list.Add(item);
-                    
+                    _logger.LogInformation("Name Product = " + item.name +" , Price = "+ item.price + " , Quantity = "+item.Quantity +" , ProductId = "+item.Productid + " , UserId = "+ item.usertId + " , Price * Quantity = " + item.totalPrice);
                 }
                 ViewBag.TotalSale = list.Sum(x => x.Quantity * Convert.ToDouble(x.price));
                 return View(GetInfoCart().Where(x=> x.usertId== userid));
