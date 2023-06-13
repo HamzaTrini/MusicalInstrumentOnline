@@ -22,7 +22,7 @@ namespace MusicalInstrumentOnline.Controllers
 
             List<Slider> list = new List<Slider>();
 
-            string cs = _configuration.GetConnectionString("ConnectionName");
+            string? cs = _configuration.GetConnectionString("ConnectionName");
             SqlConnection con = new SqlConnection(cs);
             SqlCommand cmd = new SqlCommand("select * from Slider", con);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -109,7 +109,7 @@ namespace MusicalInstrumentOnline.Controllers
                 {
                     if (slider.imageFile != null)
                     {
-                        string wwwrootpath = _webHostEnviroment.WebRootPath;
+                        string? wwwrootpath = _webHostEnviroment.WebRootPath;
                         string fileName = Guid.NewGuid().ToString() + "_" + slider.imageFile.FileName;
                         string path = Path.Combine(wwwrootpath + "/Home/img/" + fileName);
                         using (var fileStream = new FileStream(path, FileMode.Create))
@@ -117,7 +117,7 @@ namespace MusicalInstrumentOnline.Controllers
                             await slider.imageFile.CopyToAsync(fileStream);
                         }
                         slider.imagepath = fileName;
-                        string cs = _configuration.GetConnectionString("ConnectionName");
+                        string? cs = _configuration.GetConnectionString("ConnectionName");
                         SqlConnection con = new SqlConnection(cs);
                         SqlCommand cmd = new SqlCommand("UPDATE Slider SET imagepath =\'" + slider.imagepath + "\', descriptions1 =\'" + slider.Description1 + "\' , descriptions2=\'" + slider.Description2 + "\' ,descriptions3=\'"+slider.Description3+"\'  WHERE id=\'" + slider.Id + "\';", con);
                         con.Open();
