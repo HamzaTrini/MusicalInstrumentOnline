@@ -35,7 +35,6 @@ namespace MusicalInstrumentOnline.Controllers
                 slider.Description1 = dr["descriptions1"].ToString();
                 slider.Description2 = dr["descriptions2"].ToString();
                 slider.Description3 = dr["descriptions3"].ToString();
-
                 slider.imagepath = dr["imagepath"].ToString();
 
                 list.Add(slider);
